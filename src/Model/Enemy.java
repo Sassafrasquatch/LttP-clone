@@ -11,7 +11,9 @@ import java.util.HashMap;
  */
 public abstract class Enemy extends Character{
 
-	private HashMap<Item, Float> drops;
+	protected HashMap<Item, Float> drops;
+	protected String idleImage;
+	protected boolean active;
 	
 	/**
 	 * Getter for the enemy's drop table
@@ -22,6 +24,10 @@ public abstract class Enemy extends Character{
 		return this.drops;
 	}
 
+	public String getIdleImage() {
+		return idleImage;
+	}
+	
 	/**
 	 * Method stub for determining whether the
 	 * enemy has a straight line path to the player
@@ -41,5 +47,14 @@ public abstract class Enemy extends Character{
 			//between enemy and player
 		}
 		
+	}
+
+	public boolean active() {
+		// TODO Auto-generated method stub
+		return active;
+	}
+	
+	public void activate() {
+		active = true;
 	}
 }

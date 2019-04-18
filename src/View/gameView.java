@@ -12,20 +12,17 @@ import Model.Obstacle;
 import Model.Player;
 import Model.buttonMaker;
 import controller.GameController;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -36,7 +33,6 @@ public class gameView implements Observer{
 	private AnchorPane myPane;
 	private Scene myScene;
 	private Stage myStage;
-	private Area currentScreen;
 	private boolean gameStarted = false;
 	private Canvas canvas;
 	
@@ -114,6 +110,7 @@ public class gameView implements Observer{
 	 * updates the enemies' positions in the area
 	 */
 	public void updateEnemyPosition() {
+		controller.updateEnemyPositions();
 	}
 	
 	/**
@@ -220,7 +217,6 @@ public class gameView implements Observer{
 		myStage.setScene(myScene);
 		GameModel model= new GameModel();
 		controller = new GameController(model);
-		currentScreen = controller.getCurrentArea();
 		setupMovementListeners();
 		setupMouseClickListeners();
 		model.addObserver(this);
@@ -232,13 +228,13 @@ public class gameView implements Observer{
 		
 		Player player = ((GameModel) model).getPlayer();
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		currentScreen = (Area) area;
 		ArrayList<Obstacle> obstacles = ((Area) area).getObstacles();
 		ArrayList<Enemy> enemies = ((Area) area).getEnemies();
 		gc.clearRect(0, 0, WIDTH, HEIGHT);
 		Image bg = new Image("/style/background.png");
 		gc.drawImage(bg, 0, 0, WIDTH, HEIGHT);		
 		
+		//iterates through the obstacles in current area, draws them to screen
 		for(Obstacle obstacle : obstacles) {
 			Image image = new Image(obstacle.getImageFile()); 
 			if(!obstacle.destroyed()) {
@@ -250,8 +246,13 @@ public class gameView implements Observer{
 						obstacle.getLocation()[0], obstacle.getLocation()[1], obstacle.getWidth(), obstacle.getHeight());
 			}
 		}
+		
+		//iterates through enemies in current area, draws them to screen
 		for(Enemy enemy : enemies) {
-			//put this enemy on top of background
+			if(enemy.active()) {
+				Image enemyImage = new Image(enemy.getImageArray()[enemy.getDirection()-1]);
+				gc.drawImage(enemyImage, 0, 0, 21, 32, enemy.getLocation()[0], enemy.getLocation()[1], enemy.getWidth(), enemy.getHeight());
+			}
 		}
 		gc.setFill(Paint.valueOf("BLACK"));
 		
@@ -264,14 +265,29 @@ public class gameView implements Observer{
 			gc.drawImage(playerImage, 0, 0, 29, 24, player.getLocation()[0], player.getLocation()[1], 58, 48);
 		}
 		
-		//animations
+		//draw top part of large objects to help force perspective
+		for(Obstacle obstacle : obstacles) {
+			if(obstacle.hasTopImage()) {
+				Image image = new Image(obstacle.getImageFile());
+				gc.drawImage(image, 0, 0, obstacle.getWidth(), obstacle.getTopHeight(), obstacle.getLocation()[0],
+						obstacle.getLocation()[1], obstacle.getWidth(), obstacle.getTopHeight());
+			}
+		}
+		
+		//animations in progress
 		ArrayList<GameObject> finished = new ArrayList<GameObject>();
 		for(GameObject obj : ((GameModel) model).getAnimations()) {
-			int currFrame = ((Obstacle) obj).destroyedFrame()/2;
-			Image image = new Image(obj.getImageFile());
-			gc.drawImage(image, 50*currFrame, 0, 50, 50, obj.getLocation()[0], obj.getLocation()[1], 50, 50);
-			if(currFrame >= 9) {
-				finished.add(obj);
+			if(obj instanceof Obstacle) {
+				int currFrame = ((Obstacle) obj).destroyedFrame()/2;
+				Image image = new Image(obj.getImageFile());
+				gc.drawImage(image, 50*currFrame, 0, 50, 50, obj.getLocation()[0], obj.getLocation()[1], 50, 50);
+				if(currFrame >= 9) {
+					finished.add(obj);
+				}
+			}
+			else if(obj instanceof Enemy) {
+				Image image = new Image(((Enemy) obj).getIdleImage());
+				gc.drawImage(image, 40*((getGameClock()%64)/4), 0, 40, 74, obj.getLocation()[0], obj.getLocation()[1], obj.getWidth(), obj.getHeight());
 			}
 		}
 		((GameModel) model).getAnimations().removeAll(finished);

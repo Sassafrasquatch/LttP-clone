@@ -15,5 +15,7 @@ public class Tree extends Obstacle{
 		height = 100;
 		location[0] = x;
 		location[1] = y;
+		topImage = true;
+		topHeight = 50;
 	}
 }

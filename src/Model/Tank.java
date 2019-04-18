@@ -2,11 +2,20 @@ package Model;
 
 public class Tank extends Enemy{
 	
-	public Tank() {
+	public Tank(int x, int y) {
 		currentHP = 4;
 		maxHP = 4;
 		damage = 1;
 		speed = 5;
+		location[0] = x;
+		location[1] = y;
+		width = 40;
+		height = 74;
+		imageArray[2] = "/style/tank down.png";
+		direction = 3;
+		topHeight = 0;
+		idleImage = "/style/tank idle.png";
+		active = false;
 	}
 
 	@Override

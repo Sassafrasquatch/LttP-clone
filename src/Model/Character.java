@@ -12,9 +12,19 @@ public abstract class Character extends GameObject{
 	protected int damage;
 	protected int speed;
 	protected int[] hitbox;
+	protected String imageArray[] = new String[4];
 	
 	//direction is as follows: 1 is up, 2 is left, 3 is down, 4 is right.
 	protected int direction;
+	
+	public int[] getOldLocation() {
+		return oldLocation;
+	}
+	
+	public String[] getImageArray() {
+		// TODO Auto-generated method stub
+		return imageArray;
+	}
 	
 	/**
 	 * getter for hitbox array

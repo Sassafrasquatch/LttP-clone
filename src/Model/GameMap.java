@@ -49,7 +49,9 @@ public class GameMap {
 						areaOneObstacles.add(new Tree(k*100, 950));
 					}
 				}
+				areaOneEnemies.add(new Tank(700, 700));
 				areaOneObstacles.add(new Grass(300 + i*50, 300 + j*50));
+				areaOneObstacles.add(new Tree(450 + i*50, 300 + j*50));
 				map[i][j] = new Area(areaOneEnemies, areaOneObstacles, i, j);
 			}
 		}

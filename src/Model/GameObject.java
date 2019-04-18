@@ -4,8 +4,10 @@ public abstract class GameObject {
 
 	protected String imageFile;
 	protected int[] location = new int[2];
+	protected int[] oldLocation = new int[2];
 	protected int height;
 	protected int width;
+	protected int topHeight;
 	
 	/**
 	 * returns the object's height
@@ -49,6 +51,8 @@ public abstract class GameObject {
 	 * @param e the amount to increment/decrement y coordinate by
 	 */
 	public void updatePosition(double d, double e) {
+		oldLocation[0] = location[0];
+		oldLocation[1] = location[1];
 		location[0] += d;
 		location[1] += e;
 
@@ -62,7 +66,15 @@ public abstract class GameObject {
 	 */
 	public void setLocation(int x, int y) {
 		
+		oldLocation[0] = location[0];
+		oldLocation[1] = location[1];
+		
 		location[0] = x;
 		location[1] = y;
+	}
+
+	public int getTopHeight() {
+		// TODO Auto-generated method stub
+		return topHeight;
 	}
 }

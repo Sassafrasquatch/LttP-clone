@@ -11,7 +11,6 @@ public class Player extends Character{
 	private int arrowQuantity = 3;
 	private boolean smallKey = false;
 	private boolean bossKey = false;
-	private String imageArray[] = new String[4]; 
 	
 	/**
 	 * Constructor. Initializes the player character with 3 max HP and 3 current HP. This can be changed
@@ -70,10 +69,5 @@ public class Player extends Character{
 	 */
 	public boolean hasBossKey() {
 		return bossKey;
-	}
-
-	public String[] getImageArray() {
-		// TODO Auto-generated method stub
-		return imageArray;
 	}
 }
