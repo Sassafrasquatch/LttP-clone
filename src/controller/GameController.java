@@ -102,7 +102,7 @@ public class GameController {
 		}
 		if(getPlayerPosition()[1] < 0) {
 			temp[0] = getPlayerPosition()[0];
-			temp[1] = 899;
+			temp[1] = 949;
 			return temp;
 		}
 		return null;
@@ -110,7 +110,7 @@ public class GameController {
 
 	private boolean offScreen() {
 		if(getPlayerPosition()[0] < 0 || getPlayerPosition()[0] + 50 > 1500 ||
-				getPlayerPosition()[1] < 0 || getPlayerPosition()[1]  > 900) {
+				getPlayerPosition()[1] < 0 || getPlayerPosition()[1]  > 950) {
 			return true;
 		}
 		return false;
@@ -118,7 +118,6 @@ public class GameController {
 
 	private void setPlayerPosition(int i, int j) {
 		model.getPlayer().setLocation(i, j);
-		
 	}
 
 	private boolean collision(int[] playerPosition, GameObject obstacle) {
@@ -151,15 +150,34 @@ public class GameController {
 					if(model.getAnimations().contains(enemy)) {					
 						model.getAnimations().remove(enemy);
 					}
-						if(enemy.playerIsVisible()) {
-					//move towards player
+					
+					int[] referencePoint = getPathingTarget(enemy, model.getPlayer());
+					int x = enemy.getLocation()[0] - referencePoint[0] > 0 ? -enemy.getSpeed() : 0;
+					x += enemy.getLocation()[0] - referencePoint[0] < 0 ? enemy.getSpeed() : 0;
+					int y = enemy.getLocation()[1] - referencePoint[1] > 0 ? -enemy.getSpeed() : 0;
+					y += enemy.getLocation()[1] - referencePoint[1] < 0 ? enemy.getSpeed() : 0;
+					if(enemy.getHP() < enemy.getMaxHP()/2) {
+						x = -x;
+						y = -y;
 					}
-					else {
-						//move around obstacle
-						}
+					enemy.updatePosition(x, y);
+					if(enemy.getLocation()[0] < 0 || enemy.getLocation()[0] > 1500 - enemy.getWidth() || enemy.getLocation()[1] < 0 || 
+							enemy.getLocation()[1] > 1000 - enemy.getHeight()) enemy.setLocation(enemy.getOldLocation()[0], enemy.getOldLocation()[1]);
 				}
 			}
 		}
+	}
+
+	private int[] getPathingTarget(Enemy enemy, Player player) {
+		boolean visible = true;
+		int[] referencePoint = new int[2];
+
+		
+		for(Obstacle obstacle : model.getCurrentArea().getObstacles()) {
+			
+		}
+		if(visible)	return player.getLocation();
+		return referencePoint;
 	}
 
 	private double distanceToPlayer(Enemy enemy) {
@@ -183,6 +201,7 @@ public class GameController {
 		for(Enemy enemy : model.getCurrentArea().getEnemies()) {
 			if(weaponCollision(model.getPlayer(), enemy)) {
 				enemy.loseHP(model.getPlayer().getDamage());
+				System.out.println(enemy.getHP());
 			}
 		}
 		
@@ -240,6 +259,25 @@ public class GameController {
 
 	public void bowAttack(Canvas canvas) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	public void checkProjectileCollision() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeDeadEnemies() {
+		ArrayList<Enemy> dead = new ArrayList<Enemy>();
+		for(Enemy enemy : model.getCurrentArea().getEnemies()) {
+			if(enemy.isDead()) {
+				dead.add(enemy);
+			}
+		}
+		for(Enemy enemy : dead) {
+			model.addAnimation(enemy);
+		}
+		model.getCurrentArea().getEnemies().removeAll(dead);
 		
 	}
 

@@ -19,6 +19,7 @@ public class Player extends Character{
 	public Player() {
 		this.currentHP = 3;
 		this.maxHP = 3;
+		damage = 1;
 		direction = 3;
 		speed = 5;
 		width = 50;

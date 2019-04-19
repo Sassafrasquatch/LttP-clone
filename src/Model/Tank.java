@@ -6,7 +6,7 @@ public class Tank extends Enemy{
 		currentHP = 4;
 		maxHP = 4;
 		damage = 1;
-		speed = 5;
+		speed = 4;
 		location[0] = x;
 		location[1] = y;
 		width = 40;

@@ -65,6 +65,14 @@ public class GameModel extends Observable {
 	public void shiftCurrentArea(int[] area) {
 		int x = currArea.getCoords()[0];
 		int y = currArea.getCoords()[1];
+		ArrayList<GameObject> toRemove = new ArrayList<GameObject>();
+		for(GameObject o : getAnimations()) {
+			toRemove.add(o);
+		}
+		getAnimations().removeAll(toRemove);
+		for(Enemy enemy : currArea.getEnemies()) {
+			enemy.setActive(false);
+		}
 		currArea = map.getArea(x + area[0], y + area[1]);
 		setChanged();
 		notifyObservers(currArea);

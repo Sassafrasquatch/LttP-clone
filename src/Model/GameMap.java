@@ -19,7 +19,6 @@ public class GameMap {
 		
 		ArrayList<Obstacle> areaOneObstacles = new ArrayList<Obstacle>();
 		areaOneObstacles.add(new Grass(300, 300));
-		ArrayList<Enemy> areaOneEnemies = new ArrayList<Enemy>();
 		
 		/*******TODO**********
 		 * All of the Areas will be different
@@ -28,6 +27,7 @@ public class GameMap {
 		 */
 		for(int i=0; i<3; i++) {
 			for(int j=0; j<3; j++) {
+				ArrayList<Enemy> areaOneEnemies = new ArrayList<Enemy>();
 				areaOneObstacles = new ArrayList<Obstacle>();
 				if(j == 0) {
 					for(int k = 0; k < 15; k++) {

@@ -114,7 +114,7 @@ public class gameView implements Observer{
 	}
 	
 	/**
-	 * checks for player death
+	 * checks for player and enemy death
 	 * @return 
 	 */
 	public void checkDeath() {
@@ -126,6 +126,8 @@ public class gameView implements Observer{
 			 * after-death location, fill health 
 			 */
 		}
+		
+		controller.removeDeadEnemies();
 	}
 	
 	/**
@@ -139,8 +141,8 @@ public class gameView implements Observer{
 	/**
 	 * checks to see if the weapon hit an enemy
 	 */
-	public void checkWeaponCollision() {
-		
+	public void checkProjectileCollision() {
+		controller.checkProjectileCollision();
 	}
 	
 	/**
@@ -285,9 +287,12 @@ public class gameView implements Observer{
 					finished.add(obj);
 				}
 			}
-			else if(obj instanceof Enemy) {
+			else if(obj instanceof Enemy && !((Enemy) obj).isDead()) {
 				Image image = new Image(((Enemy) obj).getIdleImage());
 				gc.drawImage(image, 40*((getGameClock()%64)/4), 0, 40, 74, obj.getLocation()[0], obj.getLocation()[1], obj.getWidth(), obj.getHeight());
+			}
+			else if(obj instanceof Enemy && ((Enemy) obj).isDead()) {
+				// play death animation
 			}
 		}
 		((GameModel) model).getAnimations().removeAll(finished);
@@ -304,5 +309,10 @@ public class gameView implements Observer{
 
 	public void incrementGameClock() {
 		controller.incrementGameClock();		
+	}
+
+	public void updateEnemyCollision() {
+		// TODO Auto-generated method stub
+		
 	}
 }

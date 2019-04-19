@@ -36,25 +36,15 @@ public abstract class Enemy extends Character{
 	 */
 	public abstract boolean playerIsVisible();
 
-	public void moveTowardsPlayer() {
-		if(playerIsVisible()) {
-			//****TODO*****
-			// move directly towards the player
-		}
-		else {
-			//****TODO*****
-			//route around the closest obstacle
-			//between enemy and player
-		}
-		
-	}
-
 	public boolean active() {
-		// TODO Auto-generated method stub
 		return active;
 	}
 	
 	public void activate() {
 		active = true;
+	}
+
+	public void setActive(boolean b) {
+		active = b;		
 	}
 }

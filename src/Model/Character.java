@@ -26,6 +26,10 @@ public abstract class Character extends GameObject{
 		return imageArray;
 	}
 	
+	public int getMaxHP() {
+		return maxHP;
+	}
+	
 	/**
 	 * getter for hitbox array
 	 * 

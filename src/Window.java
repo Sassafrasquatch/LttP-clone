@@ -36,11 +36,13 @@ public class Window extends Application{
 			view.incrementGameClock();
 			view.updateCharacterPosition();
 			view.updateEnemyPosition();
+			view.updateEnemyCollision();
+			view.checkDeath();
 			/*/////TO-DO//////
 			Write methods to update everything that needs updated
 			during a tick
 			something like
-			updateEnemyPosition
+			updateBoss (since it will have a different movement pattern than a standard enemy.
 			checkDeath
 			checkWin
 			setChanged()
