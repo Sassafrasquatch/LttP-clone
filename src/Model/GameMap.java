@@ -66,6 +66,12 @@ public class GameMap {
 		return map[0][0];
 	}
 
+	/**
+	 * returns the current area the game is in
+	 * @param i x coordinate of the game area on the map
+	 * @param j y coordinate of the game area on the map
+	 * @return the area at [i][j];
+	 */
 	public Area getArea(int i, int j) {
 		// TODO Auto-generated method stub
 		return map[i][j];

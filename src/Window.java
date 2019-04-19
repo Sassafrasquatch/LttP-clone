@@ -2,6 +2,7 @@
 
 import java.util.ArrayList;
 
+import Model.GameModel;
 import View.gameView;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -31,6 +32,10 @@ public class Window extends Application{
 		}.start();
 	}
 	
+	/**
+	 * heart of the game engine, calls various methods that do all of the things
+	 * that need to be done each tick of the game clock
+	 */
 	public void tick() {
 		if(view.gameStarted()) {
 			view.incrementGameClock();

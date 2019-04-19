@@ -21,7 +21,7 @@ public class Player extends Character{
 		this.maxHP = 3;
 		damage = 1;
 		direction = 3;
-		speed = 5;
+		speed = 8;
 		width = 50;
 		height = 50;
 		location = new int[2];
@@ -31,10 +31,11 @@ public class Player extends Character{
 		imageArray[1] = "/style/playerSprites/link left.png";
 		imageArray[2] = "/style/playerSprites/Link south.png";
 		imageArray[3] = "/style/playerSprites/link right.png";
-		hitbox = new int[3];
-		hitbox[0] = 25;
-		hitbox[1] = 30;
-		hitbox[2] = 25;		
+		hitbox = new int[2];
+		hitbox[0] = 100;
+		hitbox[1] = 125;
+		hitboxWidth = 30;
+		hitboxHeight = 25;		
 	}	
 	
 	/**
@@ -44,6 +45,22 @@ public class Player extends Character{
 	 */
 	public int getArrowQuantity() {
 		return arrowQuantity;
+	}
+	
+	/**
+	 * getter for hitbox width
+	 * @return hitbox width
+	 */
+	public int getHitboxWidth() {
+		return hitboxWidth;
+	}
+	
+	/**
+	 * getter for hitbox height
+	 * @return hitbox height
+	 */
+	public int getHitboxHeight() {
+		return hitboxHeight;
 	}
 	
 	/**

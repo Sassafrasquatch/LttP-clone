@@ -73,8 +73,12 @@ public abstract class GameObject {
 		location[1] = y;
 	}
 
+	/**
+	 * returns the height of the image's top half, the half to be rendered on top
+	 * of player characters to help force perspective
+	 * @return the number of pixels of the image that need to be drawn on top of player characters
+	 */
 	public int getTopHeight() {
-		// TODO Auto-generated method stub
 		return topHeight;
 	}
 }

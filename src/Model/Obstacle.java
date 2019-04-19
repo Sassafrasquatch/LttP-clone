@@ -32,27 +32,49 @@ public abstract class Obstacle extends GameObject {
 		return destructible;
 	}
 
+	/**
+	 * returns true once the object has been destroyed
+	 * @return true if the object has been destroyed, false otherwise.
+	 */
 	public boolean destroyed() {
 		return destroyed;
 	}
 
+	/**
+	 * sets the destroyed variable to true
+	 */
 	public void toggleDestroyed() {
 		destroyed = true;
 	}
 	
+	/**
+	 * tells the obstacle to stop playing its destruction animation
+	 */
 	public void endAnimation() {
 		animationDone = true;
 	}
 	
+	/**
+	 * returns whether the destruction animation is done yet or not
+	 * @return true if the destruction animation is over, false otherwise
+	 */
 	public boolean animationDone() {
 		return animationDone;
 	}
 	
+	/**
+	 * increments the current frame of the destroyed animation, returns that frame
+	 * @return
+	 */
 	public int destroyedFrame() {
 		destroyedFrame++;
 		return destroyedFrame;
 	}
 
+	/**
+	 * returns the last frame as that is the post destruction image
+	 * @return the frame of the post-destruction image
+	 */
 	public int lastFrame() {
 		return lastFrame;
 	}

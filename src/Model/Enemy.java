@@ -14,6 +14,7 @@ public abstract class Enemy extends Character{
 	protected HashMap<Item, Float> drops;
 	protected String idleImage;
 	protected boolean active;
+	protected boolean scaredyCat;
 	
 	/**
 	 * Getter for the enemy's drop table
@@ -24,6 +25,10 @@ public abstract class Enemy extends Character{
 		return this.drops;
 	}
 
+	/**
+	 * returns the path to an image of the enemy's idle animation
+	 * @return a string representing the filepath to an enemy's idle animation
+	 */
 	public String getIdleImage() {
 		return idleImage;
 	}
@@ -36,15 +41,34 @@ public abstract class Enemy extends Character{
 	 */
 	public abstract boolean playerIsVisible();
 
+	/**
+	 * returns whether the enemy is active
+	 * @return true when the enemy needs to chase after the player, false otherwise
+	 */
 	public boolean active() {
 		return active;
 	}
 	
+	/**
+	 * tells the enemy to activate and chase a player
+	 */
 	public void activate() {
 		active = true;
 	}
 
+	/**
+	 * sets the enemy to either be active or inactive based on the passed in boolean
+	 * @param b true if the enemy needs to be active, false otherwise
+	 */
 	public void setActive(boolean b) {
 		active = b;		
+	}
+
+	/**
+	 * returns true if the enemy is a scaredy cat, false otherwise
+	 * @return true if the enemy will flee under certain circumstances, false otherwise
+	 */
+	public boolean willFlee() {
+		return scaredyCat;
 	}
 }

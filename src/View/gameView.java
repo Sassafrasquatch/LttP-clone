@@ -5,11 +5,13 @@ import java.util.Observable;
 import java.util.Observer;
 
 import Model.Area;
+import Model.Character;
 import Model.Enemy;
 import Model.GameModel;
 import Model.GameObject;
 import Model.Obstacle;
 import Model.Player;
+import Model.PlayerSwing;
 import Model.buttonMaker;
 import controller.GameController;
 import javafx.scene.Group;
@@ -73,6 +75,10 @@ public class gameView implements Observer{
 		button.setLayoutY(y);
 	}
 	
+	/**
+	 * sets up the listener for the initial button to start the game
+	 * @param button the button passed in
+	 */
 	public void setClicked(buttonMaker button) {
 		button.setOnMouseReleased((e)->{
 			startGame();
@@ -93,15 +99,12 @@ public class gameView implements Observer{
 	 * updates the player's position in the area
 	 */
 	public void updateCharacterPosition() {
-		/********NOTE********
-		 * These are placeholder values, but 
-		 * this is probably the easiest way to tell how
-		 * much to move during a given turn
-		 */
-		int xMovement = dPressed ? 8 : 0;
-		xMovement += aPressed ? -8 : 0;
-		int yMovement = wPressed ? -8 : 0;
-		yMovement += sPressed ? 8 : 0;
+		
+		//we'll just store the amount to increment the player's position per tick
+		int xMovement = dPressed ? controller.getPlayerSpeed() : 0;
+		xMovement += aPressed ? -controller.getPlayerSpeed() : 0;
+		int yMovement = wPressed ? -controller.getPlayerSpeed() : 0;
+		yMovement += sPressed ? controller.getPlayerSpeed() : 0;
 		
 		controller.updatePlayerPosition(xMovement, yMovement);
 	}
@@ -127,6 +130,7 @@ public class gameView implements Observer{
 			 */
 		}
 		
+		//remove any dead enemies from the map and add in their death animations
 		controller.removeDeadEnemies();
 	}
 	
@@ -151,6 +155,8 @@ public class gameView implements Observer{
 	 * and move diagonally as appropriate. 
 	 */
 	public void setupMovementListeners() {
+		
+		//this sets up a boolean so we can move until the player releases the key
 		myScene.setOnKeyPressed((e)->{
 			if(e.getCode() == KeyCode.W) {
 				controller.setPlayerDirection(1);
@@ -171,6 +177,7 @@ public class gameView implements Observer{
 			}
 		});
 		
+		//turns the keypress boolean false so we can stop moving when the player releases the key
 		myScene.setOnKeyReleased((e)->{
 			if(e.getCode() == KeyCode.W) {
 				wPressed = false;
@@ -186,6 +193,7 @@ public class gameView implements Observer{
 				dPressed = false;
 			}
 			
+			//these if checks set the direction that the player is moving in so the player character doesn't appear to strafe
 			if(wPressed) {
 				controller.setPlayerDirection(1);
 			}
@@ -201,6 +209,9 @@ public class gameView implements Observer{
 		});
 	}
 	
+	/**
+	 * sets up the event listeners for player mouse clicks, sword swing on left click and bow attack on right
+	 */
 	public void setupMouseClickListeners() {
 		myScene.setOnMouseClicked((e)->{
 			if(e.getButton() == MouseButton.PRIMARY) {
@@ -212,6 +223,11 @@ public class gameView implements Observer{
 		});
 	}
 
+	/**
+	 * starts up the game, creates the map and sets appropriate class variables
+	 * adds this view as an observer to the model and updates the screen when the model changes
+	 * every tick
+	 */
 	public void startGame() {
 		gameStarted = true;
 		canvas = new Canvas(WIDTH, HEIGHT);
@@ -225,6 +241,9 @@ public class gameView implements Observer{
 		update(model, controller.getCurrentArea());
 	}
 
+	/**
+	 * redraws things on screen when the model updates and notifies us
+	 */
 	@Override
 	public void update(Observable model, Object area) {
 		
@@ -232,7 +251,11 @@ public class gameView implements Observer{
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		ArrayList<Obstacle> obstacles = ((Area) area).getObstacles();
 		ArrayList<Enemy> enemies = ((Area) area).getEnemies();
+		
+		//clears the old screen
 		gc.clearRect(0, 0, WIDTH, HEIGHT);
+		
+		//draws the background layer
 		Image bg = new Image("/style/background.png");
 		gc.drawImage(bg, 0, 0, WIDTH, HEIGHT);		
 		
@@ -243,6 +266,8 @@ public class gameView implements Observer{
 				gc.drawImage(image, 0,0,obstacle.getWidth(), obstacle.getHeight(), obstacle.getLocation()[0], 
 						obstacle.getLocation()[1], obstacle.getWidth(), obstacle.getHeight());
 			}
+			
+			//obstacles leave behind remains, this draws those remains as pathable objects.
 			if(obstacle.destroyed()) {
 				gc.drawImage(image, obstacle.getWidth()*obstacle.lastFrame(),0, obstacle.getWidth(), obstacle.getHeight(),
 						obstacle.getLocation()[0], obstacle.getLocation()[1], obstacle.getWidth(), obstacle.getHeight());
@@ -253,18 +278,23 @@ public class gameView implements Observer{
 		for(Enemy enemy : enemies) {
 			if(enemy.active()) {
 				Image enemyImage = new Image(enemy.getImageArray()[enemy.getDirection()-1]);
-				gc.drawImage(enemyImage, 0, 0, 21, 32, enemy.getLocation()[0], enemy.getLocation()[1], enemy.getWidth(), enemy.getHeight());
+				gc.drawImage(enemyImage, enemy.getWidth()*((getGameClock()%6)/3), 0, enemy.getWidth(), enemy.getHeight(), 
+						enemy.getLocation()[0], enemy.getLocation()[1], enemy.getWidth(), enemy.getHeight());
 			}
 		}
-		gc.setFill(Paint.valueOf("BLACK"));
 		
-		//draw Player
+		//draw Player to screen
 		Image playerImage = new Image(player.getImageArray()[player.getDirection()-1]);
-		if(wPressed || aPressed || sPressed || dPressed) {
-			gc.drawImage(playerImage, 30*((getGameClock()%16)/4), 0, 29, 24, player.getLocation()[0], player.getLocation()[1], 58, 48);
-		}
-		else {
-			gc.drawImage(playerImage, 0, 0, 29, 24, player.getLocation()[0], player.getLocation()[1], 58, 48);
+		
+		if(!controller.playerStalled()) {
+			//this is for in motion player characters
+			if(wPressed || aPressed || sPressed || dPressed) {
+				gc.drawImage(playerImage, 30*((getGameClock()%16)/4), 0, 29, 24, player.getLocation()[0], player.getLocation()[1], 58, 48);
+			}
+			//this draws stationary player characters
+			else {
+				gc.drawImage(playerImage, 0, 0, 29, 24, player.getLocation()[0], player.getLocation()[1], 58, 48);
+			}
 		}
 		
 		//draw top part of large objects to help force perspective
@@ -276,9 +306,10 @@ public class gameView implements Observer{
 			}
 		}
 		
-		//animations in progress
+		//draw animations currently in progress
 		ArrayList<GameObject> finished = new ArrayList<GameObject>();
 		for(GameObject obj : ((GameModel) model).getAnimations()) {
+			//obstacles have a destruction animation
 			if(obj instanceof Obstacle) {
 				int currFrame = ((Obstacle) obj).destroyedFrame()/2;
 				Image image = new Image(obj.getImageFile());
@@ -287,10 +318,23 @@ public class gameView implements Observer{
 					finished.add(obj);
 				}
 			}
+			
+			if(obj instanceof PlayerSwing) {
+				Image image = new Image(((PlayerSwing) obj).getImageArray()[((PlayerSwing) obj).getDirection() - 1]);
+				gc.drawImage(image, 75*((10 - player.getStallTime())/2), 0, 75, 73, 
+						controller.getPlayerPosition()[0], controller.getPlayerPosition()[1], obj.getWidth()*0.8, obj.getHeight()*0.8);
+				player.decrementStall();
+				if(!player.stalled()) {
+					finished.add(obj);
+				}
+			}
+			
+			//plays the enemy's idle animation if they aren't currently chasing the player down
 			else if(obj instanceof Enemy && !((Enemy) obj).isDead()) {
 				Image image = new Image(((Enemy) obj).getIdleImage());
 				gc.drawImage(image, 40*((getGameClock()%64)/4), 0, 40, 74, obj.getLocation()[0], obj.getLocation()[1], obj.getWidth(), obj.getHeight());
 			}
+			//plays the enemy's death animation when they die
 			else if(obj instanceof Enemy && ((Enemy) obj).isDead()) {
 				// play death animation
 			}
@@ -298,21 +342,40 @@ public class gameView implements Observer{
 		((GameModel) model).getAnimations().removeAll(finished);
 	}
 
+	/**
+	 * returns the current tick of the game clock
+	 * @return the tick the game clock is currently on.
+	 */
 	private int getGameClock() {
 		return controller.getGameClock();
 	}
 
+	/**
+	 * returns whether the game has started or not
+	 * @return
+	 */
 	public boolean gameStarted() {
 		// TODO Auto-generated method stub
 		return gameStarted;
 	}
 
+	/**
+	 * increments the game clock by one
+	 */
 	public void incrementGameClock() {
 		controller.incrementGameClock();		
 	}
 
+	/**
+	 * calls methods to determine whether an enemy collided with the player, does damage if so.
+	 */
 	public void updateEnemyCollision() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Observable getModel() {
+		// TODO Auto-generated method stub
+		return controller.getModel();
 	}
 }
