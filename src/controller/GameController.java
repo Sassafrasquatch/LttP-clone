@@ -221,24 +221,30 @@ public class GameController {
 					int y = enemy.getLocation()[1] - referencePoint[1] > 0 ? -enemy.getSpeed() : 0;
 					y += enemy.getLocation()[1] - referencePoint[1] < 0 ? enemy.getSpeed() : 0;
 					
-					//if the enemy is a scaredy cat, make him run away when his health is under 1/2
-					if(enemy.getHP() < enemy.getMaxHP()/2 && enemy.willFlee()) {
-						x = -x;
-						y = -y;
+					if(enemy.stalled()) {
+						enemy.decrementStall();
+						enemy.updatePosition(-x*4, -y*4);
 					}
-					//update the enemy's position
-					enemy.updatePosition(x, y);
-					if(x > 0) {
-						enemy.setDirection(4);
-					}
-					if(x < 0) {
-						enemy.setDirection(2);
-					}
-					if(y > 0) {
-						enemy.setDirection(3);
-					}
-					if(y < 0) {
-						enemy.setDirection(1);
+					else {
+						//if the enemy is a scaredy cat, make him run away when his health is under 1/2
+						if(enemy.getHP() < enemy.getMaxHP()/2 && enemy.willFlee()) {
+							x = -x;
+							y = -y;
+						}
+						//update the enemy's position
+						enemy.updatePosition(x, y);
+						if(x > 0) {
+							enemy.setDirection(4);
+						}
+						if(x < 0) {
+							enemy.setDirection(2);
+						}
+						if(y > 0) {
+							enemy.setDirection(3);
+						}
+						if(y < 0) {
+							enemy.setDirection(1);
+						}
 					}
 					
 					//if the enemy is offscreen, don't let them be.
@@ -304,6 +310,7 @@ public class GameController {
 			for(Enemy enemy : model.getCurrentArea().getEnemies()) {
 				if(weaponCollision(model.getPlayer(), enemy)) {
 					enemy.loseHP(model.getPlayer().getDamage());
+					enemy.addStall(8);
 					System.out.println(enemy.getHP());
 				}
 			}
