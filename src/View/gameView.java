@@ -321,7 +321,7 @@ public class gameView implements Observer{
 			
 			if(obj instanceof PlayerSwing) {
 				Image image = new Image(((PlayerSwing) obj).getImageArray()[((PlayerSwing) obj).getDirection() - 1]);
-				gc.drawImage(image, 75*((10 - player.getStallTime())/2), 0, 75, 73, 
+				gc.drawImage(image, 75*((5 - player.getStallTime())), 0, 75, 73, 
 						controller.getPlayerPosition()[0], controller.getPlayerPosition()[1], obj.getWidth()*0.8, obj.getHeight()*0.8);
 				player.decrementStall();
 				if(!player.stalled()) {

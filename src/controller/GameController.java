@@ -221,6 +221,13 @@ public class GameController {
 					int y = enemy.getLocation()[1] - referencePoint[1] > 0 ? -enemy.getSpeed() : 0;
 					y += enemy.getLocation()[1] - referencePoint[1] < 0 ? enemy.getSpeed() : 0;
 					
+					//smooths out enemy movement if their speed is greater than the distance to the player's coordinate
+					if(Math.abs(enemy.getLocation()[0] - referencePoint[0]) < Math.abs(x)) x = x > 0 ? 
+								 referencePoint[0] - enemy.getLocation()[0] : enemy.getLocation()[0] - referencePoint[0];
+						if(Math.abs(enemy.getLocation()[1] - referencePoint[1]) < Math.abs(y)) y = y > 0 ?
+								referencePoint[1] - enemy.getLocation()[1] : enemy.getLocation()[1] - referencePoint[1];
+					
+					//knocks the enemy back if they are in a stall
 					if(enemy.stalled()) {
 						enemy.decrementStall();
 						enemy.updatePosition(-x*4, -y*4);
@@ -231,6 +238,8 @@ public class GameController {
 							x = -x;
 							y = -y;
 						}
+						
+						
 						//update the enemy's position
 						enemy.updatePosition(x, y);
 						if(x > 0) {
@@ -244,6 +253,14 @@ public class GameController {
 						}
 						if(y < 0) {
 							enemy.setDirection(1);
+						}
+						if(y != 0 && x != 0) {
+							if(Math.abs(enemy.getLocation()[0] - referencePoint[0]) > Math.abs(enemy.getLocation()[1] - referencePoint[1])) {
+								enemy.setDirection(x > 0 ? 4 : 2);
+							}
+							else {
+								enemy.setDirection(y > 0 ? 3 : 1);
+							}
 						}
 					}
 					
@@ -297,7 +314,7 @@ public class GameController {
 	 */
 	public void swordAttack(Canvas canvas) {
 		if(!model.getPlayer().stalled()) {
-			model.getPlayer().addStall(10);
+			model.getPlayer().addStall(5);
 			model.addAnimation(new PlayerSwing(model.getPlayer().getDirection()));
 			//checks for collision with obstacles
 			for(Obstacle obstacle : model.getCurrentArea().getObstacles()) {
@@ -310,8 +327,7 @@ public class GameController {
 			for(Enemy enemy : model.getCurrentArea().getEnemies()) {
 				if(weaponCollision(model.getPlayer(), enemy)) {
 					enemy.loseHP(model.getPlayer().getDamage());
-					enemy.addStall(8);
-					System.out.println(enemy.getHP());
+					enemy.addStall(5);
 				}
 			}
 		}
