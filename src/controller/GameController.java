@@ -114,12 +114,12 @@ public class GameController {
 		//and set him on the far right side of the screen.
 		if(getPlayerPosition()[0] < 0) {
 			temp[1] = getPlayerPosition()[1];
-			temp[0] = 1449;
+			temp[0] = 1149;
 			return temp;
 		}
 		
 		//if off screen to the right, y is the same and x is the left side of the screen
-		if(getPlayerPosition()[0] > 1450){
+		if(getPlayerPosition()[0] > 1150){
 			temp[1] = getPlayerPosition()[1];
 			temp[0] = 1;
 			return temp;
@@ -135,7 +135,7 @@ public class GameController {
 		//if off screen to the top, x is the same and y is to the bottom
 		if(getPlayerPosition()[1] < 0) {
 			temp[0] = getPlayerPosition()[0];
-			temp[1] = 949;
+			temp[1] = 749;
 			return temp;
 		}
 		
@@ -148,8 +148,8 @@ public class GameController {
 	 * @return true if the player is off screen, false otherwise
 	 */
 	private boolean offScreen() {
-		if(getPlayerPosition()[0] < 0 || getPlayerPosition()[0] > 1450 ||
-				getPlayerPosition()[1] < 0 || getPlayerPosition()[1]  > 950) {
+		if(getPlayerPosition()[0] < 0 || getPlayerPosition()[0] > 1150 ||
+				getPlayerPosition()[1] < 0 || getPlayerPosition()[1]  > 750) {
 			return true;
 		}
 		return false;
@@ -180,7 +180,7 @@ public class GameController {
 		//return true if the player rectangle overlaps the obstacle rectangle.
 		if(playerPosition[0] < obstacle.getLocation()[0] + obstacle.getWidth() && 
 				playerPosition[0] + model.getPlayer().getHitboxWidth() > obstacle.getLocation()[0] &&
-				model.getPlayer().getHitbox()[1] < obstacle.getLocation()[1] + obstacle.getHeight() && 
+				playerPosition[1] + model.getPlayer().getHitboxHeight() < obstacle.getLocation()[1] + obstacle.getHeight() && 
 				playerPosition[1] + model.getPlayer().getHeight() > obstacle.getLocation()[1] + obstacle.getTopHeight()) {
 			return true;
 		}
@@ -265,8 +265,8 @@ public class GameController {
 					}
 					
 					//if the enemy is offscreen, don't let them be.
-					if(enemy.getLocation()[0] < 0 || enemy.getLocation()[0] > 1500 - enemy.getWidth() || enemy.getLocation()[1] < 0 || 
-							enemy.getLocation()[1] > 1000 - enemy.getHeight()) enemy.setLocation(enemy.getOldLocation()[0], enemy.getOldLocation()[1]);
+					if(enemy.getLocation()[0] < 0 || enemy.getLocation()[0] > 1200 - enemy.getWidth() || enemy.getLocation()[1] < 0 || 
+							enemy.getLocation()[1] > 800 - enemy.getHeight()) enemy.setLocation(enemy.getOldLocation()[0], enemy.getOldLocation()[1]);
 				}
 			}
 		}
@@ -347,24 +347,24 @@ public class GameController {
 		
 		int[] playerPosition = new int[2];
 		
-		//if player is facing north, weapon affect 50x50 pixel square north of him
+		//if player is facing north, weapon affect 50x50 square north of him
 		if(player.getDirection() == 1) {
 			playerPosition[0] = player.getLocation()[0];
-			playerPosition[1] = player.getLocation()[1] - 50;
+			playerPosition[1] = player.getLocation()[1] - player.getHeight() - player.getHitboxOffset() + 15;
 		}
 		//if west, square is west
 		else if(player.getDirection() == 2) {
-			playerPosition[0] = player.getLocation()[0] - 50;
+			playerPosition[0] = player.getLocation()[0] - player.getWidth() + 15;
 			playerPosition[1] = player.getLocation()[1];
 		}
 		//if south, square is south
 		else if(player.getDirection() == 3) {
 			playerPosition[0] = player.getLocation()[0];
-			playerPosition[1] = player.getLocation()[1] + player.getHeight();			
+			playerPosition[1] = player.getLocation()[1] + player.getHeight() - 15;			
 		}
 		//else east, then square is east
 		else {
-			playerPosition[0] = player.getLocation()[0] + player.getWidth();
+			playerPosition[0] = player.getLocation()[0] + player.getWidth() - 15;
 			playerPosition[1] = player.getLocation()[1];
 		}
 		

@@ -30,8 +30,8 @@ import javafx.stage.Stage;
 
 public class gameView implements Observer{
 	private final String BACK_GROUND = "/style/back_cave.png";
-	private static final int HEIGHT = 1000;
-	private static final int WIDTH = 1500;
+	private static final int HEIGHT = 800;
+	private static final int WIDTH = 1200;
 	private AnchorPane myPane;
 	private Scene myScene;
 	private Stage myStage;
@@ -213,7 +213,7 @@ public class gameView implements Observer{
 	 * sets up the event listeners for player mouse clicks, sword swing on left click and bow attack on right
 	 */
 	public void setupMouseClickListeners() {
-		myScene.setOnMouseClicked((e)->{
+		myScene.setOnMousePressed((e)->{
 			if(e.getButton() == MouseButton.PRIMARY) {
 				controller.swordAttack(canvas);
 			}
@@ -346,7 +346,7 @@ public class gameView implements Observer{
 	 * returns the current tick of the game clock
 	 * @return the tick the game clock is currently on.
 	 */
-	private int getGameClock() {
+	public int getGameClock() {
 		return controller.getGameClock();
 	}
 

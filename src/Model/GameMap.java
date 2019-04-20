@@ -41,12 +41,12 @@ public class GameMap {
 				}
 				if(i == 2) {
 					for(int k = 0; k < 20; k++) {
-						areaOneObstacles.add(new Tree(1450, k*50));
+						areaOneObstacles.add(new Tree(1150, k*50));
 					}
 				}
 				if(j == 2) {
 					for(int k = 0; k < 15; k++) {
-						areaOneObstacles.add(new Tree(k*100, 950));
+						areaOneObstacles.add(new Tree(k*100, 750));
 					}
 				}
 				areaOneEnemies.add(new Tank(700, 700));

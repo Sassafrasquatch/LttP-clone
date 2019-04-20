@@ -39,20 +39,22 @@ public class Window extends Application{
 	public void tick() {
 		if(view.gameStarted()) {
 			view.incrementGameClock();
-			view.updateCharacterPosition();
-			view.updateEnemyPosition();
-			view.updateEnemyCollision();
-			view.checkDeath();
-			/*/////TO-DO//////
-			Write methods to update everything that needs updated
-			during a tick
-			something like
-			updateBoss (since it will have a different movement pattern than a standard enemy.
-			checkDeath
-			checkWin
-			setChanged()
-			notifyObservers()
-			*/
+			if(view.getGameClock()%2 > 0) {
+				view.updateCharacterPosition();
+				view.updateEnemyPosition();
+				view.updateEnemyCollision();
+				view.checkDeath();
+				/*/////TO-DO//////
+				Write methods to update everything that needs updated
+				during a tick
+				something like
+				updateBoss (since it will have a different movement pattern than a standard enemy.
+				checkDeath
+				checkWin
+				setChanged()
+				notifyObservers()
+				*/
+			}
 		}
 	}
 }
