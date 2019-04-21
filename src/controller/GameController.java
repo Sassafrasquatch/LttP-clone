@@ -461,5 +461,19 @@ public class GameController {
 		return model;
 	}
 
+	public void enemyAttack() {
+		for(Enemy enemy : model.getCurrentArea().getEnemies()) {
+			if(collision(model.getPlayer().getLocation(), enemy)) {
+				//add player stall
+				//toggle damage flag
+				//player knockback code
+				//if(playerdamageflag){
+				//	model.getPlayer().loseHP(enemy.getDamage());
+				//}
+			}
+		}
+		
+	}
+
 	
 }

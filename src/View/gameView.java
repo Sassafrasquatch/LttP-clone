@@ -297,15 +297,6 @@ public class gameView implements Observer{
 			}
 		}
 		
-		//draw top part of large objects to help force perspective
-		for(Obstacle obstacle : obstacles) {
-			if(obstacle.hasTopImage()) {
-				Image image = new Image(obstacle.getImageFile());
-				gc.drawImage(image, 0, 0, obstacle.getWidth(), obstacle.getTopHeight(), obstacle.getLocation()[0],
-						obstacle.getLocation()[1], obstacle.getWidth(), obstacle.getTopHeight());
-			}
-		}
-		
 		//draw animations currently in progress
 		ArrayList<GameObject> finished = new ArrayList<GameObject>();
 		for(GameObject obj : ((GameModel) model).getAnimations()) {
@@ -340,6 +331,14 @@ public class gameView implements Observer{
 			}
 		}
 		((GameModel) model).getAnimations().removeAll(finished);
+		//draw top part of large objects to help force perspective
+		for(Obstacle obstacle : obstacles) {
+			if(obstacle.hasTopImage()) {
+				Image image = new Image(obstacle.getImageFile());
+				gc.drawImage(image, 0, 0, obstacle.getWidth(), obstacle.getTopHeight(), obstacle.getLocation()[0],
+						obstacle.getLocation()[1], obstacle.getWidth(), obstacle.getTopHeight());
+			}
+		}
 	}
 
 	/**
@@ -370,7 +369,7 @@ public class gameView implements Observer{
 	 * calls methods to determine whether an enemy collided with the player, does damage if so.
 	 */
 	public void updateEnemyCollision() {
-		// TODO Auto-generated method stub
+		controller.enemyAttack();
 		
 	}
 

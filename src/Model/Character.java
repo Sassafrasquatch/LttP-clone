@@ -143,8 +143,10 @@ public abstract class Character extends GameObject{
 	 * @param e the amount to increment/decrement y coordinate by
 	 */
 	public void updatePosition(double d, double e) {
-		oldLocation[0] = location[0];
-		oldLocation[1] = location[1];
+		if (!stalled){
+			oldLocation[0] = location[0];
+			oldLocation[1] = location[1];
+		}
 		location[0] += d;
 		location[1] += e;
 		
