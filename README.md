@@ -13,6 +13,9 @@ JavaFX, Java 1.8.202
 CONTROLS
 =======================
 P - pauses the game and pulls up a map of the overland area
+
 left click - swings the sword in the direction the player is facing
+
 right click - shoots a bow in the direction the player is facing
+
 WASD - movement
