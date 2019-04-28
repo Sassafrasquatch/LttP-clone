@@ -19,3 +19,5 @@ left click - swings the sword in the direction the player is facing
 right click - shoots a bow in the direction the player is facing
 
 WASD - movement
+
+Note: there are no win/lose conditions written into the game as of now.
