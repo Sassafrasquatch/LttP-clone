@@ -1,5 +1,7 @@
 package Model;
 
+import javafx.scene.image.Image;
+
 /**
  * Abstract class for characters that can move and do damage
  * @author Wes Rodgers
@@ -14,28 +16,42 @@ public abstract class Character extends GameObject{
 	protected int[] hitbox;
 	protected int hitboxWidth;
 	protected int hitboxHeight;
-	protected String imageArray[] = new String[4];
+	protected Image imageArray[] = new Image[4];
 	protected int hitboxOffset;
 	private int stallTime = 0;
-	private boolean stalled = false;
+	private boolean stalled = false; 
 	
 	//direction is as follows: 1 is up, 2 is left, 3 is down, 4 is right.
 	protected int direction;
 	
-	
+	/**
+	 * returns true when the character is in a stall, false otherwise
+	 * @return true when the character is in a stall, false otherwise
+	 */
 	public boolean stalled() {
 		return stalled;
 	}
 	
+	/**
+	 * adds a stall to this character
+	 * @param i the number of ticks that the stall should last for
+	 */
 	public void addStall(int i) {
 		stalled = true;
 		stallTime += i;
 	}
 	
+	/**
+	 * returns the length of time remaining on the stall
+	 * @return the length of time remaining on the stall
+	 */
 	public int getStallTime() {
 		return stallTime;
 	}
 	
+	/** decrements the stall time by 1, unstalls
+	 * the character once it hits 0
+	 */
 	public void decrementStall() {
 		stallTime--;
 		if(stallTime == 0) {
@@ -63,7 +79,7 @@ public abstract class Character extends GameObject{
 	 * returns the images for the character's movement
 	 * @return an array of Strings where each string is the filepath to an image for the characters movement in a direction
 	 */
-	public String[] getImageArray() {
+	public Image[] getImageArray() {
 		// TODO Auto-generated method stub
 		return imageArray;
 	}
@@ -142,13 +158,14 @@ public abstract class Character extends GameObject{
 	 * @param d the amount to increment/decrement x coordinate by
 	 * @param e the amount to increment/decrement y coordinate by
 	 */
-	public void updatePosition(double d, double e) {
+	public void updatePosition(double x, double y) {
+		
 		if (!stalled){
 			oldLocation[0] = location[0];
 			oldLocation[1] = location[1];
 		}
-		location[0] += d;
-		location[1] += e;
+		location[0] += x;
+		location[1] += y;
 		
 		hitbox[0] = location[0];
 		hitbox[1] = location[1] + height - hitboxHeight;
@@ -202,5 +219,21 @@ public abstract class Character extends GameObject{
 	 */
 	public void setDamage(int damage) {
 		this.damage = damage;
+	}
+	
+	/**
+	 * getter for hitbox width
+	 * @return hitbox width
+	 */
+	public int getHitboxWidth() {
+		return hitboxWidth;
+	}
+	
+	/**
+	 * getter for hitbox height
+	 * @return hitbox height
+	 */
+	public int getHitboxHeight() {
+		return hitboxHeight;
 	}
 }

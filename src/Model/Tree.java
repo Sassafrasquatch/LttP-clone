@@ -1,5 +1,7 @@
 package Model;
 
+import javafx.scene.image.Image;
+
 /**
  * Extends obstacle, this is an indestructible, large,
  * collision causing obstacle.
@@ -9,7 +11,7 @@ package Model;
 public class Tree extends Obstacle{
 
 	public Tree(int x, int y) {
-		imageFile = "/style/Tree.png";
+		imageFile = new Image(Tree.class.getResource("/style/Tree.png").toString());
 		destructible = false;
 		width = 100;
 		height = 100;
@@ -17,5 +19,5 @@ public class Tree extends Obstacle{
 		location[1] = y;
 		topImage = true;
 		topHeight = 50;
-	}
+	} 
 }

@@ -1,13 +1,15 @@
-
-
-import java.util.ArrayList;
-
-import Model.GameModel;
 import View.gameView;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.stage.Stage;
+import javafx.stage.Stage; 
 
+/**
+ * This is the "main" class of the game. Creates the view, starts the game engine
+ * has main()
+ * 
+ * @author TianZeHu, Wes Rodgers
+ *
+ */
 public class Window extends Application{
 	
 	private gameView view;
@@ -24,37 +26,34 @@ public class Window extends Application{
 		primaryStage = view.getStage();
 		primaryStage.setTitle("Adventure game");
 		primaryStage.show();		
-		new AnimationTimer() {
-			@Override
-			public void handle(long now) {				
-				tick();
-			}
-		}.start();
-	}
+		 AnimationTimer animationTimer = new AnimationTimer() {
+				@Override
+				public void handle(long now) {				
+					tick();
+				}
+			};
+	        animationTimer.start();
+	        view.setAnimationTimer(animationTimer);
+		}
 	
 	/**
-	 * heart of the game engine, calls various methods that do all of the things
+	 * calls various methods that do all of the things
 	 * that need to be done each tick of the game clock
 	 */
 	public void tick() {
 		if(view.gameStarted()) {
 			view.incrementGameClock();
-			//if(view.getGameClock()%2 > 0) {
+			if(view.getGameClock()%4 == 0) {
 				view.updateCharacterPosition();
 				view.updateEnemyPosition();
 				view.updateEnemyCollision();
+				view.updateProjectiles();
 				view.checkDeath();
 				/*/////TO-DO//////
-				Write methods to update everything that needs updated
-				during a tick
-				something like
-				updateBoss (since it will have a different movement pattern than a standard enemy.
-				checkDeath
-				checkWin
-				setChanged()
-				notifyObservers()
+				check player death
+				check win conditions 
 				*/
-			//}
+			}
 		}
 	}
 }

@@ -2,6 +2,8 @@ package Model;
 
 import java.util.HashMap;
 
+import javafx.scene.image.Image;
+
 /**
  * Abstract class for enemies. Provides methods and fields that all types
  * of enemies will need
@@ -11,8 +13,9 @@ import java.util.HashMap;
  */
 public abstract class Enemy extends Character{
 
-	protected HashMap<Item, Float> drops;
-	protected String idleImage;
+	protected HashMap<Integer, Item> drops = new HashMap<Integer, Item>();
+	protected int lootChance;
+	protected Image idleImage;
 	protected boolean active;
 	protected boolean scaredyCat;
 	
@@ -21,7 +24,7 @@ public abstract class Enemy extends Character{
 	 * 
 	 * @return a HashMap mapping the item as a key and a float representing drop chance as the value
 	 */
-	public HashMap<Item, Float> getDrops() {
+	public HashMap<Integer, Item> getDrops() {
 		return this.drops;
 	}
 
@@ -29,17 +32,9 @@ public abstract class Enemy extends Character{
 	 * returns the path to an image of the enemy's idle animation
 	 * @return a string representing the filepath to an enemy's idle animation
 	 */
-	public String getIdleImage() {
+	public Image getIdleImage() {
 		return idleImage;
 	}
-	
-	/**
-	 * Method stub for determining whether the
-	 * enemy has a straight line path to the player
-	 * without any collision objects in the way
-	 * @return
-	 */
-	public abstract boolean playerIsVisible();
 
 	/**
 	 * returns whether the enemy is active
@@ -70,5 +65,41 @@ public abstract class Enemy extends Character{
 	 */
 	public boolean willFlee() {
 		return scaredyCat;
+	}
+	
+	/**
+	 * returns whether the enemy dropped loot
+	 * @return true if the enemy drops loot, false otherwise
+	 */
+	public boolean didLootDrop() {
+		return System.nanoTime()%100 < lootChance;
+	}
+	
+	/**
+	 * returns the item the enemy dropped
+	 * @return the Item that the enemy dropped
+	 */
+	public Item lootDrop() {
+		return drops.get(new Integer((int) (System.nanoTime()%drops.size())));
+	}
+	
+	/**
+	 * moves the player and their loot by the passed in values
+	 * @param x the x distance
+	 * @param y the y distance
+	 */
+	public void updateLocation(int x, int y) {
+		location[0] += x;
+		location[1] += y;
+	}
+	
+	/**
+	 * sets the location of the enemy and their loot
+	 * @param x the x coordinate to set
+	 * @param y the y coordinate to set
+	 */
+	public void setLocation(int x, int y) {
+		location[0] = x;
+		location[1] = y;
 	}
 }

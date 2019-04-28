@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 
 /**
@@ -17,17 +18,35 @@ public class GameModel extends Observable {
 	private Player player;
 	private Area currArea;
 	private GameMap map;
+	private GameMap dungeon;
+	private boolean inDungeon = false;
 	private int gameClock = 0;
 	private ArrayList<GameObject> animations = new ArrayList<GameObject>();
 	
-	public GameModel() {
+	public GameModel() { 
 		player = new Player();
 		map = new GameMap();
+		dungeon = new GameMap(true);
 		currArea = map.getStartArea();
 		setChanged();
 		notifyObservers();
 	}
 
+	/**
+	 * returns whether the player is in the dungeon or not
+	 * @return true if we're in a dungeon, false otherwise
+	 */
+	public boolean inDungeon() {
+		return inDungeon;
+	}
+	
+	/**
+	 * toggles the indungeon flag
+	 */
+	public void toggleInDungeon() {
+		inDungeon = !inDungeon;
+	}
+	
 	/**
 	 * getter for the Player
 	 * 
@@ -74,15 +93,41 @@ public class GameModel extends Observable {
 	public void shiftCurrentArea(int[] area) {
 		int x = currArea.getCoords()[0];
 		int y = currArea.getCoords()[1];
+		
+		Area old = currArea;
+		if(inDungeon) {
+			currArea = dungeon.getArea(x + area[0],  y + area[1]);
+		}
+		else {
+			currArea = map.getArea(x + area[0], y + area[1]);
+		}
+		
+		//when we change screens, first remove all animations on screen
 		ArrayList<GameObject> toRemove = new ArrayList<GameObject>();
 		for(GameObject o : getAnimations()) {
 			toRemove.add(o);
 		}
 		getAnimations().removeAll(toRemove);
-		for(Enemy enemy : currArea.getEnemies()) {
+		
+		//then remove all loot objects
+		toRemove = new ArrayList<GameObject>();
+		for(GameObject o : old.getLoot()) {
+			toRemove.add(o);
+		}
+		old.getLoot().removeAll(toRemove);
+		
+		//finally, remove all projectiles
+		toRemove = new ArrayList<GameObject>();
+		for(GameObject proj : old.getProjectiles()) {
+			toRemove.add(proj);
+		}
+		currArea.getProjectiles().removeAll(toRemove);
+		
+		for(Enemy enemy : old.getEnemies()) {
 			enemy.setActive(false);
 		}
-		currArea = map.getArea(x + area[0], y + area[1]);
+		
+		
 		setChanged();
 		notifyObservers(currArea);
 	}
@@ -126,5 +171,44 @@ public class GameModel extends Observable {
 	 */
 	public ArrayList<GameObject> getAnimations() {
 		return animations;
+	}
+
+	/**
+	 * sets our current area to the dungeon map and puts
+	 * our player in the right spot on the map
+	 */
+	public void swapToDungeon() {
+		Iterator<GameObject> itr = getAnimations().iterator();
+		while(itr.hasNext()) {
+			itr.next();
+			itr.remove();
+		}
+		currArea = dungeon.getArea(0, 0);
+		player.setLocation(400, 60);
+	}
+
+	/**
+	 * sets our current area to the overland map and puts our
+	 * player in the right spot on the map
+	 */
+	public void swapToOverland() {
+		currArea = map.getArea(2, 2);
+		player.setLocation(753, 424);
+	}
+
+	/**
+	 * returns the dungeon's GameMap
+	 * @return the dungeon's GameMap
+	 */
+	public GameMap getDungeonMap() {
+		return dungeon;
+	}
+
+	/**
+	 * returns the overland GameMap
+	 * @return the overland GameMap
+	 */
+	public GameMap getOverlandMap() {
+		return map;
 	}	
 }
