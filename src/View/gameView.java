@@ -93,7 +93,7 @@ public class gameView implements Observer{
 	private void githubLink(Button button) {
 		button.setOnMouseClicked((c) -> {
 			try {
-				Desktop.getDesktop().browse(new URI("https://github.com/CSC335Spring2019/csc335-team-zelda-finalproject-tianze-wes-jiangfeng"));
+				Desktop.getDesktop().browse(new URI("https://github.com/WesRodgers/LttP-clone"));
 			} catch (IOException | URISyntaxException e) {
 				e.printStackTrace();
 			}
