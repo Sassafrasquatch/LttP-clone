@@ -1,7 +1,7 @@
 # LttP-clone
 LttP clone originally created for an OOP class.
 
-I do not claim ownership of any of the images in the game, and it is not affilated with Nintendo in any way, shape or form.
+I do not claim ownership of any of the images in the game and it is not affilated with Nintendo in any way, shape or form.
 I recorded the music personally, but did not write it.
 
 This was initially a team project for CSC335 at the University of Arizona that I ended up writing almost singlehandedly, so I'm
