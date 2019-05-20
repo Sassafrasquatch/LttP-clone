@@ -1,5 +1,6 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Observable;
@@ -13,8 +14,9 @@ import java.util.Observable;
  * @author Wes Rodgers
  */
 
-public class GameModel extends Observable {
+public class GameModel extends Observable implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private Player player;
 	private Area currArea;
 	private GameMap map;
@@ -31,7 +33,7 @@ public class GameModel extends Observable {
 		setChanged();
 		notifyObservers();
 	}
-
+	
 	/**
 	 * returns whether the player is in the dungeon or not
 	 * @return true if we're in a dungeon, false otherwise
@@ -134,7 +136,7 @@ public class GameModel extends Observable {
 
 	/**
 	 * adds an obstacle to the list of things that need to be animated
-	 * @param obstacle
+	 * @param obstacle the obstacle to add to the animations list
 	 */
 	public void addAnimation(GameObject obstacle) {
 		animations.add(obstacle);

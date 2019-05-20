@@ -1,5 +1,6 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -11,7 +12,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Wes Rodgers
  *
  */
-public class Area {
+public class Area implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private CopyOnWriteArrayList<Obstacle> obstacles;
 	private CopyOnWriteArrayList<Enemy> enemies;
 	private int[] coords = new int[2];
@@ -43,7 +45,7 @@ public class Area {
 	
 	/**
 	 * getter for the area's loot list
-	 * @return an ArrayList<Item> of the Area's loot items
+	 * @return an arraylist of items of the Area's loot items
 	 */
 	public ArrayList<Item> getLoot(){
 		return loot;
@@ -86,7 +88,7 @@ public class Area {
 
 	/**
 	 * adds the specified projectile to the area
-	 * @param projectile
+	 * @param projectile the projectile we are adding
 	 */
 	public void addProjectile(Character projectile) {
 		projectiles.add(projectile);
