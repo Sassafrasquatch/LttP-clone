@@ -1,5 +1,5 @@
 # LttP-clone
-LttP clone originally created for an OOP class.
+LttP-like game originally created for an OOP class.
 
 I do not claim ownership of any of the images in the game and it is not affilated with Nintendo in any way, shape or form.
 I recorded the music personally, but did not write it.
