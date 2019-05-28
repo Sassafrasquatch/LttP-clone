@@ -1,4 +1,7 @@
 # LttP-clone
+
+
+
 LttP-like game originally created for an OOP class.
 The spec given to us required at least: a playable character, 3 collectible items, health, a weapon, 9 screens of content, a map, win/loss conditions, obstacles (grass, rocks, etc), 3 unique enemy types, a menu, and background music.
 
