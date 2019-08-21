@@ -9,7 +9,7 @@ I do not claim ownership of any of the images in the game and it is not affilate
 I recorded and edited the music with an Epiphone SG Pro, an Orange amp, and Audacity, but did not write it.
 
 This was initially a team project for CSC335 at the University of Arizona that I ended up writing almost singlehandedly, so I'm
-tossing it up here as an example of something I'm a little proud of. LiJiangFeng (unknown github name) wrote the majority of the junit tests, TianZeHu (https://github.com/tianzehu) created the menu in GameView and the GameResources class, JiaZhuoMi (https://github.com/jiazhuomi) wrote the initial version of MusicPlayer. I wrote everything else, including actually implementing the save/load feature and fixing the MusicPlayer class so it actually worked. 
+tossing it up here as an example of something I'm a little proud of. Admittedly, I expected more help so a lot of this is me just filling in to just get things working last minute (only had 2.5 weeks). LiJiangFeng (unknown github name) wrote the majority of the junit tests, TianZeHu (https://github.com/tianzehu) created the menu in GameView and the GameResources class, JiaZhuoMi (https://github.com/jiazhuomi) wrote the initial version of MusicPlayer. I wrote everything else, including actually implementing the save/load feature and fixing the MusicPlayer class so it actually worked. 
 
 The .jar file is the complete version of the game with menu and win/lose conditions implemented. For some reason even with the font
 in the same folder as the rest of my resources and read in with Class.getResource() it doesn't load correctly in the executable .jar file.
